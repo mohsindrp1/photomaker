@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Passport Photo Maker — India</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="brand">
+        <span class="brand-icon">🪪</span>
+        <div>
+          <h1>Jafran Dariyapur</h1>
+          <p class="brand-sub">Dariyapur — Studio-Quality Prints</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button id="btnDownload" class="btn btn-primary" disabled>⬇ Download PNG</button>
+        <button id="btnPrint"    class="btn btn-outline" disabled>🖨 Print A4</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== MAIN LAYOUT ===== -->
+  <main class="app-body">
+
+    <!-- ====== LEFT PANEL: CONTROLS ====== -->
+    <aside class="controls-panel">
+
+      <!-- 1. UPLOAD -->
+      <section class="ctrl-section">
+        <h2 class="ctrl-title">📁 Upload Photo</h2>
+        <label class="upload-box" id="uploadLabel">
+          <input type="file" id="fileInput" accept="image/*" hidden />
+          <div class="upload-placeholder" id="uploadPlaceholder">
+            <span class="upload-icon">+</span>
+            <span>Click or Drag Photo Here</span>
+            <span class="upload-hint">JPG / PNG / WEBP</span>
+          </div>
+          <img id="uploadPreview" class="upload-preview hidden" alt="Preview" />
+        </label>
+      </section>
+
+      <!-- 2. PHOTO SIZE -->
+      <section class="ctrl-section">
+        <h2 class="ctrl-title">📐 Photo Size</h2>
+        <div class="radio-group">
+          <label class="radio-card">
+            <input type="radio" name="photoSize" value="india_passport" checked />
+            <span class="radio-label">🇮🇳 India Passport<br/><small>35 × 45 mm</small></span>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="photoSize" value="visa_2x2" />
+            <span class="radio-label">✈ Visa (2×2")<br/><small>51 × 51 mm</small></span>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="photoSize" value="custom" />
+            <span class="radio-label">✏ Custom<br/><small>Enter below</small></span>
+          </label>
+        </div>
+        <div id="customSizeRow" class="inline-inputs hidden">
+          <label>W (mm)<input type="number" id="customW" value="35" min="10" max="200" /></label>
+          <label>H (mm)<input type="number" id="customH" value="45" min="10" max="200" /></label>
+        </div>
+      </section>
+
+      <!-- 3. DPI -->
+      <section class="ctrl-section">
+        <h2 class="ctrl-title">🔍 Print DPI</h2>
+        <div class="seg-group" id="dpiGroup">
+          <button class="seg-btn" data-val="150">150</button>
+          <button class="seg-btn active" data-val="300">300 ★</button>
+          <button class="seg-btn" data-val="600">600</button>
+        </div>
+      </section>
+
+      <!-- 4. BACKGROUND -->
+      <section class="ctrl-section">
+        <h2 class="ctrl-title">🎨 Background</h2>
+        <div class="color-swatches">
+          <label class="swatch-wrap" title="White">
+            <input type="radio" name="bgColor" value="#ffffff" checked />
+            <span class="swatch" style="background:#ffffff;border:2px solid #ccc;"></span>
+            <span>White</span>
+          </label>
+          <label class="swatch-wrap" title="Blue">
+            <input type="radio" name="bgColor" value="#a8c8e8" />
+            <span class="swatch" style="background:#a8c8e8;"></span>
+            <span>Blue</span>
+          </label>
+          <label class="swatch-wrap" title="Light Grey">
+            <input type="radio" name="bgColor" value="#d9d9d9" />
+            <span class="swatch" style="background:#d9d9d9;"></span>
+            <span>Grey</span>
+          </label>
+        </div>
+      </section>
+
+      <!-- 5. MARGINS -->
+      <section class="ctrl-section">
+        <h2 class="ctrl-title">📏 Page Margins (mm)</h2>
+        <div class="grid-inputs">
+          <label>Top<input type="number" id="marginTop"   value="10" min="0" max="50" /></label>
+          <label>Left<input type="number" id="marginLeft"  value="10" min="0" max="50" /></label>
+          <label>Right<input type="number" id="marginRight" value="10" min="0" max="50" /></label>
+        </div>
+        <p class="ctrl-hint">Bottom space = remaining (auto-fill from top)</p>
+      </section>
+
+      <!-- 6. GAP -->
+      <section class="ctrl-section">
+        <h2 class="ctrl-title">↔ Photo Gap (mm)</h2>
+        <div class="slider-row">
+          <input type="range" id="gapSlider" min="0" max="10" step="0.5" value="2" />
+          <span id="gapVal">2 mm</span>
+        </div>
+      </section>
+
+      <!-- 7. PHOTO COUNT -->
+      <section class="ctrl-section">
+        <h2 class="ctrl-title">🔢 Photo Count</h2>
+        <div class="seg-group" id="countGroup">
+          <button class="seg-btn active" data-val="auto">AUTO</button>
+          <button class="seg-btn" data-val="4">4</button>
+          <button class="seg-btn" data-val="6">6</button>
+          <button class="seg-btn" data-val="8">8</button>
+          <button class="seg-btn" data-val="12">12</button>
+          <button class="seg-btn" data-val="16">16</button>
+        </div>
+      </section>
+
+      <!-- 8. BORDER -->
+      <section class="ctrl-section">
+        <h2 class="ctrl-title">🔲 Border</h2>
+        <div class="toggle-row">
+          <label class="toggle-switch">
+            <input type="checkbox" id="borderToggle" />
+            <span class="slider-thumb"></span>
+          </label>
+          <span id="borderLabel">Off</span>
+        </div>
+        <div id="borderControls" class="hidden">
+          <label class="sub-label">Thickness (px)
+            <input type="range" id="borderThickness" min="1" max="5" value="1" />
+            <span id="borderThickVal">1px</span>
+          </label>
+          <label class="sub-label">Color
+            <input type="color" id="borderColor" value="#000000" />
+          </label>
+        </div>
+      </section>
+
+      <!-- 9. POSITION / ZOOM -->
+      <section class="ctrl-section">
+        <h2 class="ctrl-title">🔎 Position & Zoom</h2>
+        <label class="sub-label">Zoom
+          <input type="range" id="zoomSlider" min="50" max="200" value="100" />
+          <span id="zoomVal">100%</span>
+        </label>
+        <label class="sub-label">X Offset
+          <input type="range" id="xSlider" min="-200" max="200" value="0" />
+          <span id="xVal">0</span>
+        </label>
+        <label class="sub-label">Y Offset
+          <input type="range" id="ySlider" min="-200" max="200" value="0" />
+          <span id="yVal">0</span>
+        </label>
+        <button class="btn btn-sm btn-ghost" id="btnResetPos">↺ Reset Position</button>
+      </section>
+
+    </aside>
+
+    <!-- ====== RIGHT PANEL: PREVIEWS ====== -->
+    <section class="preview-panel">
+
+      <!-- Single photo preview -->
+      <div class="preview-block">
+        <h3 class="preview-title">Single Photo Preview</h3>
+        <div class="single-preview-wrap">
+          <canvas id="singleCanvas"></canvas>
+          <div class="no-photo-msg" id="noPhotoMsg">Upload a photo to begin</div>
+        </div>
+      </div>
+
+      <!-- A4 sheet preview -->
+      <div class="preview-block a4-block">
+        <div class="a4-header">
+          <h3 class="preview-title">A4 Sheet Preview</h3>
+          <span id="photoCountBadge" class="count-badge"></span>
+        </div>
+        <div class="a4-preview-wrap" id="a4Wrap">
+          <canvas id="a4Canvas"></canvas>
+          <div class="no-photo-msg" id="noPhotoMsgA4">Upload a photo to see layout</div>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <!-- Hidden print canvas -->
+  <canvas id="printCanvas" style="display:none;"></canvas>
+
+  <script src="script.js"></script>
+</body>
+</html>
